@@ -51,3 +51,12 @@ order they happened. Each entry: what went wrong, how it was noticed, what chang
   7/26; cell-level crops gave some good digits but unreadable descriptions.
 - **What changed:** stopped; no OCR code or dependency was added, INV-06 is listed as not delivered.
 - **How verified:** repo code unchanged, 37 tests still pass, README states the limitation.
+
+## 7. V2 compared a derived value with itself for INV-05
+- **What went wrong:** INV-05 prints no net per VAT rate, so the extractor derives it from the line totals. V2
+  (sum of lines per rate against net_by_vat_rate) then compared a value with itself and could never fail there.
+- **How noticed:** feedback in the organizers' reply to my questions.
+- **What changed:** V2 now also compares the sum of the line totals with the printed total net (Summe netto);
+  V3 and V4 already use the printed VAT and totals.
+- **How verified:** new test test_v2_compares_the_sum_of_lines_with_the_printed_total_net; INV-04 still fails
+  V1 and V2, all other documents pass.

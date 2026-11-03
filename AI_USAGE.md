@@ -10,16 +10,22 @@
 - No AI-generated data was used as a reference: expected values come from the PDFs
   and `INV-01_expected_output.json`.
 
-## Two concrete cases where the AI was wrong or incomplete
-1. The AI's first validation plan defined V1 as qty x price / PE x (1 - discount) = line_total
-   with no sign rule. On INV-03 (credit note) the line totals are negative (e.g. 225,80-) while quantity and
-   price are positive, so V1 would have failed all three lines for no reason. This was found when the plan
-   was cross-checked against the brief (rule 4) and the INV-03 numbers before coding. V1 now flips the sign
-   for credit notes; test_credit_note_sign_is_handled_in_v1 covers it (FAILURE_LOG 1).
-2. The AI's first word extraction from INV-01 used pdfplumber's default x_tolerance=3 and
-   returned '14,60100' for pos 5: unit price 14,60 and the PE column 100 were merged, although the layout
-   showed two columns. The AI's plan had not anticipated this. It was found by printing word coordinates.
-   page_lines now uses x_tolerance=1 and INV-01 equals the expected output (FAILURE_LOG 2).
+## Concrete cases where the AI was wrong or incomplete
+1. **Credit-note sign (INV-03).** Claude's first validation plan defined V1 as
+   quantity x price / PE x (1 - discount) = line total, with no sign rule. On INV-03 the line totals
+   are negative while quantity and price are positive, so V1 would have failed all three lines.
+   How I found out: I asked Claude to cross-check the plan against the assignment text, and it
+   noticed this before any code was written. I confirmed it by running validate.py without the
+   sign flip: INV-03 failed V1 on every line (expected 225.80, printed -225.80).
+2. **Glued numbers (INV-01, position 5).** Claude's first word extraction with pdfplumber's default
+   settings returned 14,60100: the unit price and the PE column value 100 merged into one token,
+   although the layout showed two columns. How I found out: Claude printed the word coordinates
+   while we studied the layout. I reproduced it by running extract_words with x_tolerance=3 and 1
+   on INV-01.
+3. **Circular V2 check (INV-05).** Claude's validator compared the net per VAT rate with the line
+   totals it was derived from, so for INV-05 it could never fail. How I found out: the organizers'
+   reply to my question pointed it out. V2 now also compares the sum of the lines with the printed
+   total net.
 
 Further AI mistakes caught by tests are in FAILURE_LOG (3, 4): two formatting bugs in the AI-written variant generator.
 

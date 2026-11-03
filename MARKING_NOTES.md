@@ -13,7 +13,7 @@ table header line, whose word positions define the columns on every page, so sma
 | `document_number` | Text after the label (`Rechnungs-Nr.` / `Gutschrift-Nr.` / v2 `Rechnung Nr.`) on page 1, before the table header | Label-based, not position-based; page 2/3 repeats are ignored because only lines above the page-1 table header are read | Label wording changes; number printed below the table header |
 | `document_date` | v1: label `Datum`. v2: `Rechnungsdatum`. Parsed by `parse_date` (numeric or month name) | Two date formats handled in one tested helper | A third date format (e.g. `19-Oct-2026`) raises `ValueError` |
 | `service_date` | v1: `Leistungsdatum`; v2: `Lieferdatum`; null if the label is absent | Absence gives null, never a guess. The header line `Liefertermin KW 42/2026` is deliberately not used | Supplier prints the service date under another label |
-| `due_date` | v1: `Zahlbar bis <date> ohne Abzug`; v2: `(bis <date>)` in the `Zahlungsziel` line; null otherwise (credit note) | Anchored on the phrase, searched on all pages | Phrase reworded, or a due date given only as "30 Tage" (would be null, see README limitations) |
+| `due_date` | v1: `Zahlbar bis <date> ohne Abzug`; v2: `(bis <date>)` in the `Zahlungsziel` line; null otherwise (credit note) | Anchored on the phrase, searched on all pages. For the credit note INV-03 null is correct (not printed, not derivable), confirmed by DeepLogic AI. | Phrase reworded, or a due date given only as "30 Tage" (would be null, see README limitations) |
 | `currency` | Constant `EUR` | Schema allows only EUR | Another currency would need real detection |
 | `supplier.name` | Return-address line (`<name> · street · postal city`); text before the first `·` | The postal-code pattern distinguishes it from the logo line `Industrietechnik GmbH · seit 1987` | Address line without the `·` separators |
 | `supplier.vat_id` | Regex `USt-IdNr. DE\d{9}` anywhere in the text (page footer), spaces removed | Footer is on every page | Footer missing or ID in another format |
@@ -34,13 +34,13 @@ table header line, whose word positions define the columns on every page, so sma
 | `discount_percent` | v1: `Rab. %` column, null if empty. v2: number before `%` in an `abzgl. ...` row, applied to the item above | Discount rows never become items | A discount row above its item, or two discount rows on one item (second overwrites the first) |
 | `line_total` | `Gesamt` / `Betrag` column; trailing minus gives a negative value. v2: item amount plus the (negative) discount row | Printed value is kept, never recomputed | Amount column far off from the header edge |
 | `vat_rate` | `USt %` (v1) / `MwSt` (v2, `%` stripped) column, `int` | Plain integer | Rates with decimals |
-| `totals.net_by_vat_rate` | v1: lines `Nettobetrag <r> % USt`. v2: **derived** by summing line totals per rate (not printed) | Decision documented and asked to the organizers | If the supplier prints a different per-rate net in a v2 document |
+| `totals.net_by_vat_rate` | v1: lines `Nettobetrag <r> % USt`. v2: **derived** by summing line totals per rate (not printed) | Derived, not printed; DeepLogic AI confirmed by email that this is acceptable. V2 also compares the sum of the lines with the printed total net; V3 and V4 use the printed VAT and totals | If the supplier prints a different per-rate net in a v2 document |
 | `totals.vat_by_vat_rate` | v1: `zzgl. <r> % USt auf <net>` (last token). v2: `MwSt <r>%` lines | Printed values | Label rewording |
 | `totals.net_total` | v1: sum of the printed per-rate nets (no total net line is printed). v2: `Summe netto` | Matches INV-01's expected output | A document that prints a total net different from the sum of its parts |
 | `totals.vat_total` | Sum of the printed per-rate VAT amounts (neither layout prints a VAT total) | Same | Same |
 | `totals.gross_total` | `Rechnungsbetrag` / `Gutschriftsbetrag` (v1), `Gesamtbetrag` (v2) | Anchored on the label | Label rewording |
 | `cash_discount.percent`, `.amount` | v1 Skonto sentence: `... <p> % Skonto (= <amount> EUR)`; v2: null (`Kein Skontoabzug`) | Regex on the full sentence | Skonto wording changes |
-| `cash_discount.until` | v1: date in `Bei Zahlung bis <date>`; or **computed** = document date + N days for `innerhalb von N Tagen ab Rechnungsdatum` (INV-04) | Both wordings covered; computed case is documented | Skonto period counted from another date |
+| `cash_discount.until` | v1: date in `Bei Zahlung bis <date>`; or **derived (not printed)** = document date + N days for `innerhalb von N Tagen ab Rechnungsdatum` (INV-04) | Both wordings covered; DeepLogic AI confirmed by email that deriving the date from the invoice date plus the printed days is expected | Skonto period counted from another date |
 
 ## INV-05 question (max. 200 words)
 

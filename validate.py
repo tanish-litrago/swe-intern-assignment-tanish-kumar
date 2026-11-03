@@ -68,6 +68,13 @@ def v2(doc, v1_bad):
                 line += ("; this equals the V1 error: the printed net matches the recomputed line, so the "
                          "printed line total (not the totals) is the likely mistake")
         info.append(line)
+    # Layout 2 prints no net per rate (it is derived from the lines), so the per-rate lines above compare a
+    # value with itself there. The comparison with the PRINTED total net is the real test.
+    total_lines, printed_total = sum(sums.values(), D(0)), d(doc["totals"]["net_total"])
+    diff = total_lines - printed_total
+    ok &= abs(diff) <= TOL
+    info.append(f"all rates: sum of lines {fmt(total_lines)}, printed total net {fmt(printed_total)}, "
+                f"difference {fmt(diff, True)}")
     return ok, info
 
 

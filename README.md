@@ -12,7 +12,7 @@ pip install -r requirements.txt
 
 python extract.py data/INV-0*.pdf        # writes outputs/<pdf name>.json (schema-checked)
 python validate.py outputs/              # writes outputs/validation_report.md
-python -m pytest -q                      # 37 tests
+python -m pytest -q                      # 38 tests
 ```
 
 `extract.py <pdf>` works for one file too. An unknown layout stops with a clear message and exit code 2.
@@ -41,7 +41,10 @@ Principles:
 `validate.py` prints a PASS/FAIL table (documents x V1..V7) and, per document, the numbers behind every check.
 Failures name the line, expected vs. printed and the difference, plus a *hypothesis* for the cause (rounding,
 digit transposition, consistency with the totals). Credit notes are compared with the sign flipped in V1
-(quantity and price stay positive, totals are negative). Result on the pack: only **INV-04** fails
+(quantity and price stay positive, totals are negative). V2 also compares the sum of the line totals with the printed
+total net. For INV-05 the net per VAT rate is derived, not printed, so the per-rate lines of V2 compare a
+value with itself there; this total comparison, V3 (printed VAT per rate) and V4 (printed totals) are the
+real checks. Result on the pack: only **INV-04** fails
 (V1 and V2, pos 7: printed 1.284,52 instead of 1.248,52, difference +36,00; the printed net total matches the
 recomputed value, so the line is probably the typo).
 
@@ -63,9 +66,9 @@ layout (must raise `UnknownLayout`). These are not part of the assignment pack.
   numbers correctly but not the descriptions. I preferred no output over fragile template-specific repair
   code, so there is no outputs/INV-06 file and no field of that document is trusted from OCR.
 - Only the Kessler supplier and these two layouts; German formats only.
-- v2 prints no net per VAT rate: it is derived from the line totals. v2 Skonto is always `null`
+- v2 prints no net per VAT rate: it is derived from the line totals (derived, not printed; DeepLogic AI confirmed by email that both are acceptable). v2 Skonto is always `null`
   (only "Kein Skontoabzug" was seen).
-- Skonto given as "N Tagen ab Rechnungsdatum" is converted to a date (document date + N days).
+- Skonto given as "N Tagen ab Rechnungsdatum" is converted to a date (document date + N days; derived, not printed; DeepLogic AI confirmed by email that both are acceptable).
 - `net_total` / `vat_total` are sums of the printed per-rate values (no total lines are printed in v1).
 - The label block is assumed right of x=340 (v1) and the buyer address right of x=330 (v2).
 - Quantities wider than the gap to the description (e.g. `1.000.000`) could be mis-assigned.

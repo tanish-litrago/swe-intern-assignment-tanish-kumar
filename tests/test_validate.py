@@ -26,3 +26,11 @@ def test_inv04_fails_v1_and_v2_only_and_explains_why():
 
 def test_credit_note_sign_is_handled_in_v1():
     assert results("INV-03")["V1"][0] and results("INV-03")["V7"][0]
+
+
+def test_v2_compares_the_sum_of_lines_with_the_printed_total_net():
+    for prefix in ("INV-05", "INV-01"):
+        ok, info = results(prefix)["V2"]
+        assert ok and any(line.startswith("all rates:") and "difference +0.00" in line for line in info)
+    ok, info = results("INV-04")["V2"]
+    assert not ok and any(line.startswith("all rates:") and "difference +36.00" in line for line in info)

@@ -18,6 +18,7 @@ Check definitions: V1 = line total = qty x price / PE x (1 - discount); V2 = sum
   - 6 lines checked, largest difference 0.00
 - **V2 PASS** - sum of lines = net per VAT rate
   - 19% : sum of lines 801.47, printed net 801.47, difference +0.00
+  - all rates: sum of lines 801.47, printed total net 801.47, difference +0.00
 - **V3 PASS** - net x rate = VAT per rate
   - 19% : net 801.47 x 19% = 152.28, printed VAT 152.28, difference +0.00
 - **V4 PASS** - net + VAT = gross
@@ -40,6 +41,7 @@ Check definitions: V1 = line total = qty x price / PE x (1 - discount); V2 = sum
 - **V2 PASS** - sum of lines = net per VAT rate
   - 7% : sum of lines 318.80, printed net 318.80, difference +0.00
   - 19% : sum of lines 4787.18, printed net 4787.18, difference +0.00
+  - all rates: sum of lines 5105.98, printed total net 5105.98, difference +0.00
 - **V3 PASS** - net x rate = VAT per rate
   - 19% : net 4787.18 x 19% = 909.56, printed VAT 909.56, difference -0.00
   - 7% : net 318.80 x 7% = 22.32, printed VAT 22.32, difference +0.00
@@ -62,6 +64,7 @@ Check definitions: V1 = line total = qty x price / PE x (1 - discount); V2 = sum
   - 3 lines checked, largest difference 0.00
 - **V2 PASS** - sum of lines = net per VAT rate
   - 19% : sum of lines -400.05, printed net -400.05, difference +0.00
+  - all rates: sum of lines -400.05, printed total net -400.05, difference +0.00
 - **V3 PASS** - net x rate = VAT per rate
   - 19% : net -400.05 x 19% = -76.01, printed VAT -76.01, difference -0.00
 - **V4 PASS** - net + VAT = gross
@@ -81,6 +84,7 @@ Check definitions: V1 = line total = qty x price / PE x (1 - discount); V2 = sum
 - **V2 FAIL** - sum of lines = net per VAT rate
   - 7% : sum of lines 69.80, printed net 69.80, difference +0.00
   - 19% : sum of lines 5249.22, printed net 5213.22, difference +36.00; this equals the V1 error: the printed net matches the recomputed line, so the printed line total (not the totals) is the likely mistake
+  - all rates: sum of lines 5319.02, printed total net 5283.02, difference +36.00
 - **V3 PASS** - net x rate = VAT per rate
   - 19% : net 5213.22 x 19% = 990.51, printed VAT 990.51, difference -0.00
   - 7% : net 69.80 x 7% = 4.89, printed VAT 4.89, difference +0.00
@@ -104,6 +108,7 @@ Check definitions: V1 = line total = qty x price / PE x (1 - discount); V2 = sum
 - **V2 PASS** - sum of lines = net per VAT rate
   - 7% : sum of lines 49.80, printed net 49.80, difference +0.00
   - 19% : sum of lines 925.33, printed net 925.33, difference +0.00
+  - all rates: sum of lines 975.13, printed total net 975.13, difference +0.00
 - **V3 PASS** - net x rate = VAT per rate
   - 19% : net 925.33 x 19% = 175.81, printed VAT 175.81, difference -0.00
   - 7% : net 49.80 x 7% = 3.49, printed VAT 3.49, difference +0.00
