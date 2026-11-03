@@ -3,7 +3,8 @@
 ## Tools and what they were used for
 - **Claude (claude.ai chat, with file and code tools):** reading the assignment and the PDFs, planning the architecture in chat,
   analysing the five layouts, writing the first version of the extractor, validator, tests, own variant
-  generator and these documents, and running everything in a sandbox.
+  generator and these documents, and running everything in a sandbox. It also ran the OCR experiment for the bonus scan INV-06
+  in a sandbox; nothing from it is in the repo.
 - **Antigravity (agentic IDE):** running verification checks in WSL (clean clone, tests, output comparison,
   line endings) and applying small documentation edits. It did not change the extractor or validator code.
 - No AI-generated data was used as a reference: expected values come from the PDFs

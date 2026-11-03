@@ -56,7 +56,12 @@ layout (must raise `UnknownLayout`). These are not part of the assignment pack.
 3. Add a variant to `tests/make_variants.py` and a test.
 
 ## Known limitations (shortcuts)
-- Only text-layer PDFs. **No OCR; the optional scan INV-06 was not attempted.**
+- Only text-layer PDFs. **The optional scan INV-06 is not delivered.** In an AI-assisted experiment I tried
+  Tesseract 5 (German). The scan is 110 dpi black-and-white; decimal commas and hyphens almost vanish.
+  Scored against 26 key values read by eye, the best of 36 preprocessing settings recovered 8, and the larger
+  'best' German model recovered 7 in 12 more settings. Cell-by-cell OCR with digit whitelists read some
+  numbers correctly but not the descriptions. I preferred no output over fragile template-specific repair
+  code, so there is no outputs/INV-06 file and no field of that document is trusted from OCR.
 - Only the Kessler supplier and these two layouts; German formats only.
 - v2 prints no net per VAT rate: it is derived from the line totals. v2 Skonto is always `null`
   (only "Kein Skontoabzug" was seen).

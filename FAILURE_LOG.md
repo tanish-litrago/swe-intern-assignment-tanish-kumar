@@ -42,3 +42,12 @@ order they happened. Each entry: what went wrong, how it was noticed, what chang
 - **What changed:** `requirements.txt` now pins exactly the tested versions.
 - **How verified:** a fresh virtualenv + `pip install -r requirements.txt` + `pytest` (37 passed) and a clean
   clone run of `extract.py` and `validate.py`.
+
+## 6. OCR on the bonus scan was not good enough
+- **What went wrong:** the first whole-page OCR (Tesseract 5, German, 3x upscale) of INV-06 returned text like
+  'RE - 2025 1(466' and lost decimal commas ('174 40'); the AI-suggested approach of OCR plus the existing
+  v1 parser would have produced wrong numbers.
+- **How noticed:** scoring the OCR output against 26 values read by eye: best of 36 settings 8/26, best model
+  7/26; cell-level crops gave some good digits but unreadable descriptions.
+- **What changed:** stopped; no OCR code or dependency was added, INV-06 is listed as not delivered.
+- **How verified:** repo code unchanged, 37 tests still pass, README states the limitation.
