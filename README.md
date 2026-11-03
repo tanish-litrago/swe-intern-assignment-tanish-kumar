@@ -2,7 +2,7 @@
 
 Extracts invoices and credit notes of the supplier **Kessler Industrietechnik GmbH** into JSON that follows
 `data/output_schema.json`, and checks that the printed numbers add up.
-Developed and tested on Ubuntu (WSL2), Python 3.12.
+Developed and tested on Ubuntu (WSL2) with Python 3.14; CI runs Python 3.12.
 
 ## Setup and run
 
