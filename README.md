@@ -1,5 +1,8 @@
 # Kessler fingerprint: PDF to JSON extractor + validator
 
+Video walkthrough: https://drive.google.com/file/d/1sXWo2ep4-0bZzGyrX3CvJExjnZQEyQ6R/view?usp=sharing
+(if it does not load, refresh: Google Drive may still be processing it).
+
 Extracts invoices and credit notes of the supplier **Kessler Industrietechnik GmbH** into JSON that follows
 `data/output_schema.json`, and checks that the printed numbers add up.
 Developed and tested on Ubuntu (WSL2) with Python 3.14; CI runs Python 3.12.

@@ -1,5 +1,16 @@
 # AI_USAGE
 
+## Note on the video
+The video is short, so three statements need precision. This file is the accurate version.
+- "I tested and verified every issue myself": I reproduced two problems myself in the terminal (the merged numbers
+  with x_tolerance=3 on INV-01, and the credit-note sign in V1 on INV-03). The third (V2 comparing a derived value
+  with itself for INV-05) was pointed out in DeepLogic AI's reply to my questions.
+- "I used Claude to help write the initial code": Claude wrote the first version of the extractor, validator and
+  tests. Antigravity ran my verification checks and documentation edits. I reviewed and ran everything.
+- "For invoice 5 the tax breakdown is not printed": precisely, the net amount per VAT rate is not printed (the VAT
+  amount per rate and the totals are). I derive the net per rate from the line totals; DeepLogic AI confirmed this
+  is acceptable.
+
 ## Tools and what they were used for
 - **Claude (claude.ai chat, with file and code tools):** reading the assignment and the PDFs, planning the architecture in chat,
   analysing the five layouts, writing the first version of the extractor, validator, tests, own variant
